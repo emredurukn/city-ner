@@ -23,7 +23,7 @@ end
 
 parsed_content.css(".clearfix.entry-content p").first.inner_html.split("<br>").each_with_index do |line, i|
     if i > 0
-        # numbers removed from text
+        # numbers removed from text with regex and gsub then leading and trailing whitespace removed from text with strip
         cities_of_turkey[i-1] = line.gsub(/\d+/,"").strip
     end
 end
@@ -31,6 +31,8 @@ end
 document = open("http://www.bilgibiriktir.com/2017/06/02/turkiyenin-en-kalabalik-10-sehri/", 'User-Agent' => user_agent[rand(4)])
 parsed_content = Nokogiri::HTML(document.read, nil, "UTF-8")
 
+# the information necessary to create the data set is filtered and written to the file in accordance with a template
+# according to this template, each word in the line should be labeled in a format like “word\tLABEL”
 parsed_content.css(".entry-content").inner_html.split("<p>").each do |line|
     line.split("<img")[0].gsub("<br>","").gsub("</p>","").gsub("."," ").split(" ").each do |word|
         if is_city?(word, cities_of_turkey)

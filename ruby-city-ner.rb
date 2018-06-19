@@ -43,10 +43,15 @@ parsed_content.css(".entry-content").inner_html.split("<p>").each do |line|
     end
 end
 
-def create_classifier(properties_file, java_parameter)
-    %x{
-        java #{java_parameter} -cp stanford-ner-2018-02-27/stanford-ner.jar edu.stanford.nlp.ie.crf.CRFClassifier -prop #{properties_file}
-    }
-end
+%x{
+    java -mx1000m -cp stanford-ner-2018-02-27/stanford-ner.jar edu.stanford.nlp.ie.crf.CRFClassifier -prop classifier.prop
+}
 
-create_classifier("classifier.prop", "-mx1000m")
+input = "Roma ve Bizans döneminin en önemli kentlerinden biri olan Konya 1980 sonrası Anadolu kaplanlarının en çok geliştiği vilayetlerden biri olmuştur."
+
+File.open("input.txt", 'w') { |file| file.write(input) }
+
+# output format --> slashTags , inlineXML , xml , tsv, tabbedEntities
+%x{
+    java -mx500m -cp stanford-ner-2018-02-27/stanford-ner.jar edu.stanford.nlp.ie.crf.CRFClassifier -loadClassifier city-classifier.ser.gz -textFile input.txt -outputFormat inlineXML >> output.txt
+}

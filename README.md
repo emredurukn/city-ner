@@ -1,6 +1,6 @@
 # corenlp-ner
 
-Detecting Cities in Turkey with Stanford NER (Named Entity Recognizer)
+Detecting Cities in Turkey with Stanford NER (Named Entity Recognition)
 
 Firstly, [Stanford NER](https://nlp.stanford.edu/software/CRF-NER.html) requires Java v1.8+
 
